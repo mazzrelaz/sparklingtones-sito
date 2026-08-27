@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SparklingTones — controlla il tuo Spark 2 dal browser</title>
+<meta name="description" content="Web app per organizzare i preset di un Positive Grid Spark 2 e suonarli dal vivo, via Bluetooth, senza account e senza server. Più un pedale ESP32.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SparklingTones">
+<meta property="og:description" content="Organizza i preset del tuo Spark 2 e suonali dal vivo, dal browser, via Bluetooth.">
+<meta property="og:url" content="https://sparklingtones.com/">
+<meta property="og:image" content="https://sparklingtones.com/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+
+<style>
+  /* I caratteri sono gli stessi dell'app e stanno in casa: nessuna richiesta
+     a Google Fonts, nessun cookie di terzi su questa pagina. */
+  @font-face {
+    font-family:'Inter'; src:url('fonts/inter-latin.woff2') format('woff2');
+    font-weight:400 700; font-style:normal; font-display:swap;
+  }
+  @font-face {
+    font-family:'Space Grotesk'; src:url('fonts/space-grotesk-latin.woff2') format('woff2');
+    font-weight:500 700; font-style:normal; font-display:swap;
+  }
+
+  /* Palette presa di peso dall'app, così il sito e il programma sembrano la
+     stessa cosa: il rosso è quello del logo, non uno scelto a parte. */
+  :root {
+    --bg:#000000; --panel:#121316; --line:#26282e; --line-soft:#1b1d21;
+    --text:#e8e8ea; --dim:#8a8f98; --faint:#5a5f68;
+    --accent:#e30613; --green:#7fe08a; --gold:#f0c040; --blu:#3aa0ff;
+    --font:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+    --strumento:'Space Grotesk','Inter',-apple-system,sans-serif;
+    --max:960px;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font);
+         font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  img, video { max-width:100%; display:block; }
+
+  .dentro { width:100%; max-width:var(--max); margin:0 auto; padding:0 22px; }
+
+  /* ---- barra in alto ------------------------------------------------ */
+  header { position:sticky; top:0; z-index:10; background:rgba(0,0,0,.86);
+           backdrop-filter:blur(10px); border-bottom:1px solid var(--line-soft); }
+  .barra { display:flex; align-items:center; gap:18px; height:60px; }
+  .barra .logo { height:22px; width:auto; margin-right:auto; }
+  nav { display:flex; gap:20px; }
+  nav a { color:var(--dim); text-decoration:none; font-size:14px;
+          font-family:var(--strumento); font-weight:500; }
+  nav a:hover { color:var(--text); }
+
+  .bottone { display:inline-flex; align-items:center; gap:8px;
+             background:var(--accent); color:#fff; text-decoration:none;
+             font-family:var(--strumento); font-weight:700; font-size:15px;
+             padding:11px 20px; border-radius:10px; border:1px solid #ff2a36;
+             transition:box-shadow .2s, transform .1s; }
+  .bottone:hover { box-shadow:0 0 24px -4px rgba(227,6,19,.75); }
+  .bottone:active { transform:translateY(1px); }
+  .bottone.calmo { background:transparent; color:var(--text); border-color:var(--line);
+                   box-shadow:none; }
+  .bottone.calmo:hover { border-color:var(--dim); box-shadow:none; }
+  .barra .bottone { padding:8px 15px; font-size:14px; }
+
+  /* ---- apertura ----------------------------------------------------- */
+  .apertura { position:relative; overflow:hidden; padding:86px 0 74px; text-align:center;
+              border-bottom:1px solid var(--line-soft); }
+  /* L'alone rosso è l'unico ornamento della pagina: sostituisce l'immagine
+     che non c'è ancora e dà un centro a uno schermo tutto nero. */
+  .apertura::before { content:''; position:absolute; left:50%; top:-260px;
+              width:900px; height:600px; transform:translateX(-50%);
+              background:radial-gradient(ellipse at center, rgba(227,6,19,.20), transparent 62%);
+              pointer-events:none; }
+  .apertura .dentro { position:relative; }
+  .apertura .logo { height:52px; width:auto; margin:0 auto 26px; }
+  .claim { font-family:var(--strumento); font-weight:700; font-size:clamp(28px,5.2vw,44px);
+           line-height:1.18; letter-spacing:-.02em; margin:0 auto 18px; max-width:20ch; }
+  .claim em { color:var(--accent); font-style:normal; }
+  .sotto { color:var(--dim); font-size:18px; max-width:56ch; margin:0 auto 32px; }
+  .azioni { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:30px; }
+
+  .requisiti { display:inline-flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .req { font-family:var(--strumento); font-size:12.5px; font-weight:500;
+         color:var(--dim); border:1px solid var(--line); border-radius:999px;
+         padding:5px 13px; }
+  .req.no { color:#ff8080; border-color:#4a1d20; }
+
+  /* ---- sezioni ------------------------------------------------------ */
+  section { padding:72px 0; border-bottom:1px solid var(--line-soft); }
+  h2 { font-family:var(--strumento); font-weight:700; letter-spacing:-.015em;
+       font-size:clamp(23px,3.4vw,30px); margin:0 0 10px; }
+  .occhiello { font-family:var(--strumento); font-size:12px; font-weight:700;
+               letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+               margin:0 0 14px; }
+  .introduzione { color:var(--dim); max-width:62ch; margin:0 0 38px; font-size:17px; }
+  h3 { font-family:var(--strumento); font-weight:700; font-size:19px; margin:0 0 8px; }
+  p { margin:0 0 14px; }
+
+  .schede { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .scheda { background:var(--panel); border:1px solid var(--line); border-radius:14px;
+            padding:24px; }
+  .scheda p { color:var(--dim); margin-bottom:0; }
+  .scheda p + p { margin-top:12px; }
+
+  /* ---- il disegno dei pulsantoni ------------------------------------
+     Non è una fotografia dell'app: è un disegno fatto qui con due regole di
+     CSS, per far vedere la forma della vista live finché non c'è una clip
+     vera. Le proporzioni e i colori sono quelli veri. */
+  .pulsantiera { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px;
+                 background:#0a0b0d; border:1px solid var(--line); border-radius:14px;
+                 padding:20px; margin-top:34px; }
+  /* `min-width:0` non è decorazione: i nomi dei preset sono `nowrap`, e in un
+     grid il minimo di una colonna è il suo contenuto intero. Senza questo, un
+     nome lungo allarga la pagina e su un telefono sborda tutto a destra. */
+  .meta { display:grid; grid-template-rows:repeat(4,1fr); gap:10px; min-width:0; }
+  .tasto { display:flex; align-items:center; gap:11px; padding:13px 15px; min-width:0;
+           background:var(--panel); border:1px solid var(--line); border-radius:11px;
+           font-family:var(--strumento); font-weight:500; font-size:14px;
+           color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tasto .led { width:9px; height:9px; border-radius:50%; flex:none;
+                background:var(--faint); }
+  .tasto .led.v { background:var(--green); box-shadow:0 0 8px rgba(127,224,138,.7); }
+  .tasto .led.b { background:var(--blu);  box-shadow:0 0 8px rgba(58,160,255,.7); }
+  .tasto .led.r { background:#ff3b30; box-shadow:0 0 8px rgba(255,59,48,.7); }
+  .tasto .led.g { background:var(--gold); box-shadow:0 0 8px rgba(240,192,64,.7); }
+  .tasto.acceso { border-color:#2f6ea8; background:#10233a;
+                  box-shadow:0 0 0 1px rgba(58,160,255,.35), 0 0 26px -6px rgba(58,160,255,.6); }
+  .tasto.vuoto { color:var(--faint); }
+  .didascalia { color:var(--faint); font-size:13.5px; margin-top:12px; text-align:center; }
+
+  /* ---- le tappe ----------------------------------------------------- */
+  ol.tappe { list-style:none; counter-reset:t; margin:0; padding:0; }
+  ol.tappe > li { counter-increment:t; position:relative; padding:0 0 26px 58px;
+                  border-left:1px solid var(--line); margin-left:17px; }
+  ol.tappe > li:last-child { border-left-color:transparent; padding-bottom:0; }
+  ol.tappe > li::before { content:counter(t); position:absolute; left:-18px; top:-4px;
+        width:36px; height:36px; border-radius:50%; background:var(--panel);
+        border:1px solid var(--line); color:var(--text);
+        font-family:var(--strumento); font-weight:700; font-size:15px;
+        display:flex; align-items:center; justify-content:center; }
+  ol.tappe p { color:var(--dim); margin-bottom:0; }
+
+  /* ---- avvertenze --------------------------------------------------- */
+  .avvisi { display:grid; gap:14px; }
+  .avviso { background:var(--panel); border:1px solid var(--line);
+            border-left:3px solid var(--accent); border-radius:0 12px 12px 0;
+            padding:18px 20px; }
+  .avviso strong.testa { display:block; font-family:var(--strumento); margin-bottom:4px; }
+  .avviso span { color:var(--dim); font-size:15px; }
+
+  /* ---- tabella delle misure ----------------------------------------- */
+  table { width:100%; border-collapse:collapse; margin:22px 0 0; font-size:15px; }
+  th, td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--line-soft); }
+  th { font-family:var(--strumento); font-size:12px; letter-spacing:.08em;
+       text-transform:uppercase; color:var(--faint); font-weight:700; }
+  td.n { font-family:var(--strumento); font-weight:700; white-space:nowrap; }
+  td.n em { color:var(--green); font-style:normal; }
+
+  code { font-family:ui-monospace,'Cascadia Mono',Consolas,monospace; font-size:13.5px;
+         background:#1a1c20; border:1px solid var(--line); border-radius:5px;
+         padding:1px 6px; color:#d8dade; }
+  section a:not(.bottone) { color:var(--blu); text-decoration:none;
+                            border-bottom:1px solid rgba(58,160,255,.35); }
+  section a:not(.bottone):hover { border-bottom-color:var(--blu); }
+
+  ul.puntato { color:var(--dim); padding-left:20px; margin:0; }
+  ul.puntato li { margin-bottom:9px; }
+
+  /* ---- clip video ---------------------------------------------------- */
+  .clip { margin:0 0 34px; }
+  .clip video { width:100%; border:1px solid var(--line); border-radius:14px;
+                background:#0a0b0d; }
+  .clip figcaption { color:var(--faint); font-size:13.5px; margin-top:10px; }
+
+  /* ---- chiusura ------------------------------------------------------ */
+  .chiusura { text-align:center; }
+  footer { padding:44px 0 60px; color:var(--faint); font-size:14px; }
+  footer p { max-width:64ch; margin:0 auto 12px; text-align:center; }
+  footer a { color:var(--dim); }
+
+  @media (max-width:640px) {
+    section { padding:54px 0; }
+    .apertura { padding:60px 0 54px; }
+    nav { display:none; }
+    .pulsantiera { grid-template-columns:minmax(0,1fr); gap:10px; }
+    ol.tappe > li { padding-left:46px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dentro barra">
+    <img class="logo" src="icons/logo.svg" alt="SparklingTones">
+    <nav>
+      <a href="#cosa-fa">Cosa fa</a>
+      <a href="#guida">Guida</a>
+      <a href="#pedale">Il pedale</a>
+      <a href="#protocollo">Il protocollo</a>
+    </nav>
+    <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/">Apri l&rsquo;app</a>
+  </div>
+</header>
+
+<div class="apertura">
+  <div class="dentro">
+    <img class="logo" src="icons/logo.svg" alt="SparklingTones">
+    <h1 class="claim">Il tuo Spark 2, <em>dal browser</em>.</h1>
+    <p class="sotto">
+      Organizza tutti i preset che vuoi, non solo gli otto che ci stanno nell&rsquo;ampli.
+      Poi passa alla vista live e suonali, con pulsanti grandi abbastanza da premerli
+      al buio. Nessun account, nessun server: la tua libreria resta nel tuo browser.
+    </p>
+    <div class="azioni">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/">Apri l&rsquo;app</a>
+      <a class="bottone calmo" href="#guida">Come si comincia</a>
+    </div>
+    <div class="requisiti">
+      <span class="req">Chrome o Edge</span>
+      <span class="req">Windows, Mac, Linux, Android</span>
+      <span class="req no">Su iPhone e iPad non funziona</span>
+      <span class="req">Gratis e open source</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================================
+     CLIP DI APERTURA - quando ne hai una:
+       1. metti il file in  media/  (per esempio media/apertura.mp4)
+       2. togli il commento a questo blocco
+       3. se hai anche un fermo immagine, media/apertura.jpg, va in poster
+     Registra in orizzontale, 20-40 secondi, senza audio.
+     ===================================================================
+<section>
+  <div class="dentro">
+    <figure class="clip">
+      <video src="media/apertura.mp4" poster="media/apertura.jpg"
+             muted loop playsinline autoplay preload="metadata"></video>
+      <figcaption>Dalla libreria al palco in due tocchi.</figcaption>
+    </figure>
+  </div>
+</section>
+-->
+
+<section id="cosa-fa">
+  <div class="dentro">
+    <p class="occhiello">Cosa fa</p>
+    <h2>Tre cose, e le fa tutte davanti all&rsquo;ampli acceso.</h2>
+    <p class="introduzione">
+      Lo Spark 2 tiene otto preset alla volta. Tutto il resto &mdash; i suoni che hai
+      costruito, quelli che ti servono solo per un pezzo, quelli che stai ancora
+      provando &mdash; non ha un posto dove stare. Questo è quel posto.
+    </p>
+
+    <div class="schede">
+      <div class="scheda">
+        <h3>Organizza</h3>
+        <p>
+          Tutti i preset che vuoi, con nome, categorie, note e famiglia di suono.
+          Li legge dall&rsquo;ampli, importa il <code>preset_backup.zip</code> dell&rsquo;app
+          ufficiale, esporta e reimporta in JSON.
+        </p>
+        <p>
+          Rileggere la libreria dall&rsquo;ampli <strong>non cancella mai il tuo lavoro</strong>:
+          riconosce i preset e riscrive solo la parte sonora, lasciando intatti tag,
+          note e ordine.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>Suona</h3>
+        <p>
+          Una vista <em>Live</em> fatta per essere usata mentre suoni, non per
+          catalogare: banchi da otto pulsanti grandi, un LED per riconoscere il suono
+          a colpo d&rsquo;occhio.
+        </p>
+        <p>
+          Un preset già caricato sull&rsquo;ampli si attiva <strong>all&rsquo;istante</strong>;
+          uno che non c&rsquo;è viene trasmesso per intero in circa un secondo.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>Regola</h3>
+        <p>
+          Un editor della catena effetti che agisce <strong>sul suono che sta
+          suonando</strong>: giri una manopola e l&rsquo;ampli risponde.
+        </p>
+        <p>
+          Prima di aprirsi rilegge sempre lo stato vero dall&rsquo;ampli, perché se hai
+          toccato un pomello sul pannello la verità è lì e non nella libreria.
+          Niente viene salvato finché non lo chiedi.
+        </p>
+      </div>
+    </div>
+
+    <div class="pulsantiera" aria-hidden="true">
+      <div class="meta">
+        <div class="tasto"><span class="led v"></span>DG - Shine On</div>
+        <div class="tasto acceso"><span class="led b"></span>DG - Comfortably Numb</div>
+        <div class="tasto"><span class="led r"></span>SV - For the Love of God</div>
+        <div class="tasto"><span class="led b"></span>Poles Apart</div>
+      </div>
+      <div class="meta">
+        <div class="tasto"><span class="led g"></span>Nylon Reverb</div>
+        <div class="tasto"><span class="led r"></span>CS - Europa</div>
+        <div class="tasto"><span class="led v"></span>Clean Tube</div>
+        <div class="tasto vuoto"><span class="led"></span>vuoto</div>
+      </div>
+    </div>
+    <p class="didascalia">La vista live, in due banchi da quattro come i LED dell&rsquo;ampli.</p>
+  </div>
+</section>
+
+<section id="guida">
+  <div class="dentro">
+    <p class="occhiello">Guida</p>
+    <h2>Come si comincia</h2>
+    <p class="introduzione">
+      Non c&rsquo;è niente da installare e niente da registrare. Dall&rsquo;ampli acceso alla
+      prima libreria organizzata sono cinque minuti.
+    </p>
+
+    <ol class="tappe">
+      <li>
+        <h3>Apri l&rsquo;app e premi &laquo;Connetti&raquo;</h3>
+        <p>
+          Il browser ti chiede quale apparecchio Bluetooth usare: scegli lo Spark 2.
+          Deve essere acceso e <strong>non collegato all&rsquo;app ufficiale</strong> &mdash; un
+          padrone alla volta. Se non lo trovi nell&rsquo;elenco, il primo sospetto è quello.
+        </p>
+      </li>
+      <li>
+        <h3>Lascia che legga gli otto slot</h3>
+        <p>
+          Appena connesso comincia da solo a leggere i preset che hai caricato
+          nell&rsquo;ampli. Ci mette qualche secondo. Compaiono in alto, etichettati
+          <strong>A1&hellip;B4</strong> con i colori dei LED del pannello: rosso il banco A,
+          verde il banco B.
+        </p>
+      </li>
+      <li>
+        <h3>Porta dentro tutto il resto</h3>
+        <p>
+          Se usi l&rsquo;app ufficiale, esporta da lì il <code>preset_backup.zip</code> e
+          caricalo: entra tutta la tua collezione in un colpo. Altrimenti la libreria si
+          costruisce man mano, con &laquo;Leggi il suono corrente&raquo; ogni volta che trovi
+          qualcosa che ti piace.
+        </p>
+      </li>
+      <li>
+        <h3>Dai un nome alle cose</h3>
+        <p>
+          Categorie per lo stile &mdash; il gruppo, il pezzo, il genere &mdash; e la famiglia
+          (clean, drive, acoustic) che diventa il colore con cui riconosci il preset
+          senza leggerlo. Le note servono per quello che scopri provando: quale assolo,
+          quale accordatura, cosa abbassare quando il locale rimbomba.
+        </p>
+      </li>
+      <li>
+        <h3>Prepara i banchi per il concerto</h3>
+        <p>
+          Un banco è una scaletta: otto preset nell&rsquo;ordine in cui ti servono.
+          I banchi che inventi tu <strong>non toccano l&rsquo;ampli</strong> &mdash; i preset si
+          caricano al momento &mdash; quindi puoi farne quanti vuoi senza il rischio di
+          sovrascrivere gli otto che ci sono dentro.
+        </p>
+      </li>
+      <li>
+        <h3>Installala, per averla anche senza rete</h3>
+        <p>
+          Dal menù del browser, &laquo;Installa app&raquo; (o &laquo;Aggiungi alla schermata Home&raquo;).
+          Diventa un&rsquo;icona, si apre a schermo intero e funziona offline: a un concerto
+          la rete non c&rsquo;è, e non deve servire.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================================================================
+     CLIP DELLE FUNZIONI - tre clip corte valgono più di un video lungo.
+     Stesso procedimento: file in media/, poi togli il commento.
+     Suggerite: la libreria che si popola leggendo dall'ampli; i pulsantoni
+     live premuti uno dopo l'altro; una manopola girata con l'ampli che
+     risponde (quella riprendila col telefono, si deve sentire).
+     ===================================================================
+<section>
+  <div class="dentro">
+    <p class="occhiello">Com&rsquo;è fatta</p>
+    <h2>Guardala mentre lavora</h2>
+    <figure class="clip">
+      <video src="media/libreria.mp4" muted loop playsinline autoplay preload="metadata"></video>
+      <figcaption>La libreria si popola da sola leggendo gli otto slot dell&rsquo;ampli.</figcaption>
+    </figure>
+    <figure class="clip">
+      <video src="media/live.mp4" muted loop playsinline autoplay preload="metadata"></video>
+      <figcaption>La vista live: un preset già nell&rsquo;ampli si attiva senza attesa.</figcaption>
+    </figure>
+    <figure class="clip">
+      <video src="media/editor.mp4" controls playsinline preload="metadata"></video>
+      <figcaption>L&rsquo;editor agisce sul suono che sta suonando. Alza il volume.</figcaption>
+    </figure>
+  </div>
+</section>
+-->
+
+<section id="da-sapere">
+  <div class="dentro">
+    <p class="occhiello">Prima di cominciare</p>
+    <h2>Le cose da sapere</h2>
+    <p class="introduzione">
+      Questo progetto è nato per risolvere un problema mio e funziona sul mio ampli.
+      Il protocollo dello Spark 2 non è documentato da nessuna parte: qui è stato
+      ricostruito osservando, misurando e verificando sull&rsquo;hardware. Alcune cose
+      conviene saperle prima.
+    </p>
+
+    <div class="avvisi">
+      <div class="avviso">
+        <strong class="testa">Su iPhone e iPad non funziona</strong>
+        <span>
+          Serve Web Bluetooth, e su iOS ogni browser è obbligato a usare il motore di
+          Apple, che non ce l&rsquo;ha. Non è una scelta nostra e non c&rsquo;è modo di aggirarla.
+          Su Android, Windows, Mac e Linux, con Chrome o Edge, funziona.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">Scrivere in uno slot dell&rsquo;ampli non si torna indietro</strong>
+        <span>
+          Quello che c&rsquo;era prima è perso. Per provare un preset senza rischiare niente
+          c&rsquo;è la strada sicura, che lo fa suonare senza toccare gli otto slot: è quella
+          che l&rsquo;app usa di suo.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">L&rsquo;ampli si può piantare</strong>
+        <span>
+          Capita con i comandi pesanti, e allora serve staccare la corrente. Non si
+          rompe niente, ma se succede a metà di un pezzo è una seccatura: meglio
+          scoprirlo a casa che sul palco.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">Gli effetti del pacchetto Jimi Hendrix restano muti</strong>
+        <span>
+          Sono l&rsquo;unico contenuto a pagamento dello Spark 2, e a sbloccarli è una chiave
+          che manda l&rsquo;app ufficiale appena si connette. Basta collegare l&rsquo;app ufficiale
+          una volta e da lì in poi funzionano, anche dopo che l&rsquo;hai chiusa. L&rsquo;app li
+          segna con un bollo <strong>JH</strong>, così lo sai prima di sceglierne uno e
+          non dopo averlo sentito muto.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">La libreria vive nel browser</strong>
+        <span>
+          Niente account e niente server: nessun tuo dato esce di lì. Il rovescio è che
+          se cambi browser o apparecchio non ti segue da sola. Si esporta in JSON, e
+          per chi la usa su più apparecchi c&rsquo;è un sync con Dropbox &mdash; sempre senza
+          server di mezzo.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">È provata su un solo Spark 2</strong>
+        <span>
+          Il mio. Con un altro esemplare, o un altro firmware, non so cosa succede.
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pedale">
+  <div class="dentro">
+    <p class="occhiello">In lavorazione</p>
+    <h2>Il pedale</h2>
+    <p class="introduzione">
+      La vista live, staccata dal telefono. Un ESP32 prende i banchi dall&rsquo;app via
+      Bluetooth, se li tiene in memoria e poi è autonomo: si collega da solo allo
+      Spark e cambia preset col piede. Quattro footswitch per i suoni, uno per
+      cambiare metà del banco senza toccare quello che sta suonando.
+    </p>
+    <p>
+      È a metà: il firmware funziona su una schedina nuda, l&rsquo;apparecchio vero
+      &mdash; footswitch, LED, display &mdash; non è ancora costruito. Ma la parte
+      interessante è già misurata, e non è la banda:
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Caricare un preset intero</th><th>Misurato</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>dal telefono, via Web Bluetooth</td><td class="n">1246 ms</td></tr>
+        <tr><td>dall&rsquo;ESP32, chiedendo un intervallo di 7,5 ms</td><td class="n"><em>326 ms</em></td></tr>
+        <tr><td>dall&rsquo;ESP32, a regime</td><td class="n"><em>178&ndash;215 ms</em></td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:20px; color:var(--dim)">
+      Il secondo che ci mette il telefono sono sedici scambi di andata e ritorno con
+      l&rsquo;ampli. Web Bluetooth non lascia toccare l&rsquo;intervallo di connessione;
+      sull&rsquo;ESP32 sì, ed è tutta la differenza.
+    </p>
+  </div>
+</section>
+
+<section id="protocollo">
+  <div class="dentro">
+    <p class="occhiello">Per chi sviluppa</p>
+    <h2>Il protocollo dello Spark 2, documentato</h2>
+    <p class="introduzione">
+      Se sei arrivato qui cercando come si parla a uno Spark 2, questa è
+      probabilmente la parte che ti serve. È tutta pubblica, sul repository, con le
+      catture grezze e anche le strade che si sono rivelate chiuse &mdash; così nessuno
+      le ripercorre.
+    </p>
+    <ul class="puntato">
+      <li>Servizio GATT <code>0xFFC0</code>, scrittura <code>0xFFC1</code> (solo
+          <em>write without response</em>), notifiche <code>0xFFC2</code>.</li>
+      <li>I comandi sugli effetti vogliono un byte <code>0x00</code> in coda: senza,
+          l&rsquo;ampli risponde con un ack regolare e <strong>non applica niente</strong>.
+          Non sta in nessun&rsquo;altra fonte, ed è una differenza dello Spark 2.</li>
+      <li>I chunk di un preset sono da <strong>25 byte</strong>, non 128: con 128 lo
+          Spark 2 chiude la connessione.</li>
+      <li>Tutti i chunk di un preset vanno con lo stesso sequence number, o l&rsquo;ampli li
+          conferma tutti e non ne assembla nessuno.</li>
+      <li>Far suonare un preset e salvarlo in uno slot sono <strong>due strade
+          diverse</strong>, e la seconda vuole un giro via-e-ritorno che sembra
+          decorazione e non lo è.</li>
+      <li>L&rsquo;ack conferma la ricezione, non l&rsquo;esecuzione: l&rsquo;assenza di errori non è
+          una verifica.</li>
+    </ul>
+    <p style="margin-top:26px">
+      <a class="bottone calmo" href="https://github.com/mazzrelaz/SparklingTones">Il codice su GitHub</a>
+      <a class="bottone calmo" href="https://github.com/mazzrelaz/SparklingTones/blob/main/docs/protocollo-spark2.md">Il protocollo, per esteso</a>
+    </p>
+  </div>
+</section>
+
+<section class="chiusura">
+  <div class="dentro">
+    <h2>Si apre e basta.</h2>
+    <p class="introduzione" style="margin:10px auto 28px">
+      Niente da installare, niente da registrare, niente da pagare.
+    </p>
+    <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/">Apri l&rsquo;app</a>
+  </div>
+</section>
+
+<footer>
+  <div class="dentro">
+    <p>
+      SparklingTones è un progetto personale di Massimo Togni, distribuito con licenza
+      MIT. I nomi degli effetti vengono dal catalogo di
+      <a href="https://github.com/soundshed/soundshed-app">Soundshed</a>; il riferimento
+      per il Bluetooth è <a href="https://github.com/paulhamsh/Spark">paulhamsh/Spark</a>.
+    </p>
+    <p>
+      <strong>Nessun rapporto con Positive Grid Inc.</strong> Non è un prodotto
+      ufficiale, non è approvato né supportato, e non usa loro codice. &laquo;Spark&raquo; e
+      &laquo;Positive Grid&raquo; sono citati solo per dire con cosa funziona.
+    </p>
+    <p style="margin-top:20px">
+      <a href="https://github.com/mazzrelaz/SparklingTones">GitHub</a> &middot;
+      <a href="https://mazzrelaz.github.io/SparklingTones/">Apri l&rsquo;app</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
