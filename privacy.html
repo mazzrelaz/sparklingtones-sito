@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — SparklingTones</title>
+<meta name="description" content="Questo sito non usa cookie e non traccia nessuno. Cosa viene registrato, da chi, e perché.">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+<style>
+  /* Stesse variabili e stessi caratteri della pagina principale. Sono ripetuti
+     qui invece che in un foglio comune perché le pagine sono due e ognuna resta
+     un file solo che si apre da sé: è la stessa scelta dell'app. */
+  @font-face {
+    font-family:'Inter'; src:url('fonts/inter-latin.woff2') format('woff2');
+    font-weight:400 700; font-style:normal; font-display:swap;
+  }
+  @font-face {
+    font-family:'Space Grotesk'; src:url('fonts/space-grotesk-latin.woff2') format('woff2');
+    font-weight:500 700; font-style:normal; font-display:swap;
+  }
+  :root {
+    --bg:#000000; --panel:#121316; --line:#26282e; --line-soft:#1b1d21;
+    --text:#e8e8ea; --dim:#8a8f98; --faint:#5a5f68;
+    --accent:#e30613; --green:#7fe08a; --blu:#3aa0ff;
+    --font:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+    --strumento:'Space Grotesk','Inter',-apple-system,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font);
+         font-size:16px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+  img { max-width:100%; display:block; }
+  .dentro { width:100%; max-width:720px; margin:0 auto; padding:0 22px; }
+
+  header { border-bottom:1px solid var(--line-soft); }
+  .barra { display:flex; align-items:center; gap:18px; height:60px; }
+  .barra .logo { height:22px; width:auto; margin-right:auto; }
+  .barra a.indietro { color:var(--dim); text-decoration:none; font-size:14px;
+                      font-family:var(--strumento); font-weight:500; }
+  .barra a.indietro:hover { color:var(--text); }
+
+  main { padding:56px 0 40px; }
+  h1 { font-family:var(--strumento); font-weight:700; letter-spacing:-.02em;
+       font-size:clamp(26px,4.6vw,36px); margin:0 0 6px; }
+  .data { color:var(--faint); font-family:var(--strumento); font-size:13px;
+          margin:0 0 36px; }
+  h2 { font-family:var(--strumento); font-weight:700; font-size:19px;
+       margin:38px 0 10px; }
+  p { margin:0 0 14px; color:var(--dim); }
+  p.forte { color:var(--text); }
+  strong { color:var(--text); }
+  ul { color:var(--dim); padding-left:20px; margin:0 0 14px; }
+  li { margin-bottom:8px; }
+  a { color:var(--blu); text-decoration:none; border-bottom:1px solid rgba(58,160,255,.35); }
+  a:hover { border-bottom-color:var(--blu); }
+
+  /* Il riquadro in cima dice tutto in tre righe: chi legge una privacy policy
+     cerca una risposta, non un documento. */
+  .breve { background:var(--panel); border:1px solid var(--line);
+           border-left:3px solid var(--green); border-radius:0 12px 12px 0;
+           padding:20px 22px; margin:0 0 8px; }
+  .breve p { margin:0; color:var(--text); }
+  .breve p + p { margin-top:10px; color:var(--dim); }
+
+  footer { border-top:1px solid var(--line-soft); padding:30px 0 60px;
+           color:var(--faint); font-size:14px; }
+  footer a { color:var(--dim); border-bottom-color:transparent; }
+  footer a:hover { border-bottom-color:var(--dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dentro barra">
+    <a href="./"><img class="logo" src="icons/logo.svg" alt="SparklingTones"></a>
+    <a class="indietro" href="./">Torna al sito</a>
+  </div>
+</header>
+
+<main>
+  <div class="dentro">
+    <h1>Privacy</h1>
+    <p class="data">Ultimo aggiornamento: 31 agosto 2026</p>
+
+    <div class="breve">
+      <p><strong>Questo sito non usa cookie e non traccia nessuno.</strong></p>
+      <p>
+        Non ci sono script, non ci sono moduli da compilare, non c&rsquo;è nessuna statistica
+        e non viene fatta nessuna richiesta a servizi di terzi. Non è previsto nessun
+        banner perché non c&rsquo;è niente da consentire.
+      </p>
+    </div>
+
+    <h2>Chi è il titolare</h2>
+    <p>
+      Massimo Togni, autore di SparklingTones. Il progetto è personale e senza scopo di
+      lucro. Per qualsiasi cosa il canale è
+      <a href="https://github.com/mazzrelaz/SparklingTones/issues">GitHub</a>.
+    </p>
+
+    <h2>Cosa succede quando apri questa pagina</h2>
+    <p>
+      Il sito è composto da file statici ospitati su <strong>GitHub Pages</strong>. Come
+      qualunque server web, quello di GitHub registra nei propri log tecnici l&rsquo;indirizzo
+      IP, il tipo di browser, la data e la pagina richiesta. Serve a consegnare le pagine
+      e a difendersi dagli abusi.
+    </p>
+    <p>
+      <strong>Quei dati non arrivano a me e non li uso.</strong> Il trattamento è di
+      GitHub, che agisce come fornitore dell&rsquo;infrastruttura: le sue regole sono nella
+      <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">privacy policy di GitHub</a>.
+    </p>
+
+    <h2>Cookie e tracciamenti</h2>
+    <p>
+      Nessuno. Nel dettaglio, questa pagina e quella principale <strong>non</strong>
+      contengono:
+    </p>
+    <ul>
+      <li>cookie di nessun tipo, né tecnici né di profilazione;</li>
+      <li>statistiche, analytics o pixel di tracciamento;</li>
+      <li>pulsanti social, video incorporati o mappe;</li>
+      <li>moduli, campi di testo o iscrizioni a qualcosa;</li>
+      <li>script di alcun genere.</li>
+    </ul>
+    <p>
+      Anche i <strong>caratteri tipografici sono serviti da questo stesso dominio</strong>,
+      non da Google Fonts o da altri servizi esterni: aprendo il sito il tuo browser non
+      contatta nessun altro server. È una scelta deliberata, non un caso.
+    </p>
+
+    <h2>I link verso l&rsquo;esterno</h2>
+    <p>
+      Le pagine contengono alcuni collegamenti a GitHub e all&rsquo;app. Un collegamento non
+      fa partire niente finché non lo apri; da quel momento in poi valgono le regole del
+      sito su cui sei arrivato, non queste.
+    </p>
+
+    <h2>L&rsquo;app SparklingTones</h2>
+    <p>
+      L&rsquo;app vera e propria sta a un altro indirizzo
+      (<a href="https://mazzrelaz.github.io/SparklingTones/">mazzrelaz.github.io/SparklingTones</a>)
+      e funziona così: <strong>non c&rsquo;è nessun account e non c&rsquo;è nessun server mio</strong>.
+      La libreria dei preset resta nel database del tuo browser, sul tuo apparecchio, e
+      non viene trasmessa da nessuna parte.
+    </p>
+    <p>
+      L&rsquo;unica funzione che esce dall&rsquo;apparecchio è il <strong>sincronismo con
+      Dropbox</strong>, ed è facoltativa: la attivi tu, con le tue credenziali Dropbox e
+      una chiave applicativa che registri tu. In quel caso i file finiscono nel tuo
+      Dropbox, sotto il tuo controllo, e valgono le condizioni di Dropbox. Anche lì non
+      passano da me.
+    </p>
+
+    <h2>I tuoi diritti</h2>
+    <p>
+      Il regolamento europeo (GDPR) ti dà il diritto di accedere ai tuoi dati personali,
+      correggerli, cancellarli e opporti al trattamento. Dato che <strong>di dati miei
+      non ne esistono</strong> — non raccolgo niente e non conservo niente — non c&rsquo;è
+      nulla che tu debba chiedere a me. Per i log tecnici del server la richiesta va
+      rivolta a GitHub, con i canali indicati nella loro privacy policy.
+    </p>
+
+    <h2>Se questa pagina cambia</h2>
+    <p>
+      Se un domani il sito dovesse introdurre qualcosa che raccoglie dati, questa pagina
+      verrà aggiornata prima, e la data in cima lo dirà. La storia completa delle
+      modifiche è pubblica nel
+      <a href="https://github.com/mazzrelaz/sparklingtones-sito">repository del sito</a>.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="dentro">
+    <a href="./">SparklingTones</a> &middot;
+    <a href="https://github.com/mazzrelaz/SparklingTones">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
