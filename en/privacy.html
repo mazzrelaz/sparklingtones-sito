@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — SparklingTones</title>
+<meta name="description" content="This site uses no cookies and tracks nobody. What gets logged, by whom, and why.">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="../icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="alternate" hreflang="it" href="https://sparklingtones.com/privacy.html">
+<link rel="alternate" hreflang="en" href="https://sparklingtones.com/en/privacy.html">
+
+<style>
+  /* Stesse variabili e stessi caratteri della pagina principale. Sono ripetuti
+     qui invece che in un foglio comune perché le pagine sono due e ognuna resta
+     un file solo che si apre da sé: è la stessa scelta dell'app. */
+  @font-face {
+    font-family:'Inter'; src:url('../fonts/inter-latin.woff2') format('woff2');
+    font-weight:400 700; font-style:normal; font-display:swap;
+  }
+  @font-face {
+    font-family:'Space Grotesk'; src:url('../fonts/space-grotesk-latin.woff2') format('woff2');
+    font-weight:500 700; font-style:normal; font-display:swap;
+  }
+  :root {
+    --bg:#000000; --panel:#121316; --line:#26282e; --line-soft:#1b1d21;
+    --text:#e8e8ea; --dim:#8a8f98; --faint:#5a5f68;
+    --accent:#e30613; --green:#7fe08a; --blu:#3aa0ff;
+    --font:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+    --strumento:'Space Grotesk','Inter',-apple-system,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font);
+         font-size:16px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+  img { max-width:100%; display:block; }
+  .dentro { width:100%; max-width:720px; margin:0 auto; padding:0 22px; }
+
+  header { border-bottom:1px solid var(--line-soft); }
+  .barra { display:flex; align-items:center; gap:18px; height:60px; }
+  .barra .logo { height:22px; width:auto; margin-right:auto; }
+  .barra a.indietro { color:var(--dim); text-decoration:none; font-size:14px;
+                      font-family:var(--strumento); font-weight:500; }
+  .barra a.indietro:hover { color:var(--text); }
+
+  main { padding:56px 0 40px; }
+  h1 { font-family:var(--strumento); font-weight:700; letter-spacing:-.02em;
+       font-size:clamp(26px,4.6vw,36px); margin:0 0 6px; }
+  .data { color:var(--faint); font-family:var(--strumento); font-size:13px;
+          margin:0 0 36px; }
+  h2 { font-family:var(--strumento); font-weight:700; font-size:19px;
+       margin:38px 0 10px; }
+  p { margin:0 0 14px; color:var(--dim); }
+  p.forte { color:var(--text); }
+  strong { color:var(--text); }
+  ul { color:var(--dim); padding-left:20px; margin:0 0 14px; }
+  li { margin-bottom:8px; }
+  a { color:var(--blu); text-decoration:none; border-bottom:1px solid rgba(58,160,255,.35); }
+  a:hover { border-bottom-color:var(--blu); }
+
+  /* Il riquadro in cima dice tutto in tre righe: chi legge una privacy policy
+     cerca una risposta, non un documento. */
+  .breve { background:var(--panel); border:1px solid var(--line);
+           border-left:3px solid var(--green); border-radius:0 12px 12px 0;
+           padding:20px 22px; margin:0 0 8px; }
+  .breve p { margin:0; color:var(--text); }
+  .breve p + p { margin-top:10px; color:var(--dim); }
+
+  footer { border-top:1px solid var(--line-soft); padding:30px 0 60px;
+           color:var(--faint); font-size:14px; }
+  footer a { color:var(--dim); border-bottom-color:transparent; }
+  footer a:hover { border-bottom-color:var(--dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dentro barra">
+    <a href="./"><img class="logo" src="../icons/logo.svg" alt="SparklingTones"></a>
+    <a class="indietro" href="../privacy.html" hreflang="it" lang="it">Italiano</a>
+    <a class="indietro" href="./">Back to the site</a>
+  </div>
+</header>
+
+<main>
+  <div class="dentro">
+    <h1>Privacy</h1>
+    <p class="data">Last updated: 31 August 2026</p>
+
+    <div class="breve">
+      <p><strong>This site uses no cookies and tracks nobody.</strong></p>
+      <p>
+        There are no scripts, no forms to fill in, no statistics, and no requests are
+        made to third-party services. There&rsquo;s no banner because there&rsquo;s nothing
+        to consent to.
+      </p>
+    </div>
+
+    <h2>Who the controller is</h2>
+    <p>
+      Massimo Togni, author of SparklingTones. The project is personal and
+      non-profit. For anything at all, the channel is
+      <a href="https://github.com/mazzrelaz/SparklingTones/issues">GitHub</a>.
+    </p>
+
+    <h2>What happens when you open this page</h2>
+    <p>
+      The site is made of static files hosted on <strong>GitHub Pages</strong>. Like any
+      web server, GitHub&rsquo;s records in its own technical logs the IP address, the
+      browser type, the date and the page requested. This is used to deliver the pages
+      and to defend against abuse.
+    </p>
+    <p>
+      <strong>That data doesn&rsquo;t reach me and I don&rsquo;t use it.</strong> The processing
+      is GitHub&rsquo;s, acting as infrastructure provider: its rules are in the
+      <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement">GitHub privacy statement</a>.
+    </p>
+
+    <h2>Cookies and tracking</h2>
+    <p>
+      None. In detail, this page and the main one do <strong>not</strong>
+      contain:
+    </p>
+    <ul>
+      <li>cookies of any kind, neither technical nor profiling;</li>
+      <li>statistics, analytics or tracking pixels;</li>
+      <li>social buttons, embedded videos or maps;</li>
+      <li>forms, text fields or sign-ups of any sort;</li>
+      <li>scripts of any kind.</li>
+    </ul>
+    <p>
+      Even the <strong>fonts are served from this same domain</strong>, not from Google
+      Fonts or other external services: when you open the site your browser contacts no
+      other server. This is a deliberate choice, not an accident.
+    </p>
+
+    <h2>Links to the outside</h2>
+    <p>
+      The pages contain a few links to GitHub and to the app. A link doesn&rsquo;t trigger
+      anything until you open it; from then on the rules of the site you arrived at
+      apply, not these.
+    </p>
+
+    <h2>The SparklingTones app</h2>
+    <p>
+      The actual app lives at another address
+      (<a href="https://mazzrelaz.github.io/SparklingTones/?lang=en">mazzrelaz.github.io/SparklingTones</a>)
+      and works like this: <strong>there is no account and no server of mine</strong>.
+      The preset library stays in your browser&rsquo;s database, on your device, and is
+      not sent anywhere.
+    </p>
+    <p>
+      The only feature that leaves the device is the <strong>Dropbox sync</strong>, and
+      it&rsquo;s optional: you turn it on, with your Dropbox credentials and an app key you
+      register yourself. In that case the files end up in your Dropbox, under your
+      control, and Dropbox&rsquo;s terms apply. There too, they don&rsquo;t pass through me.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      The European regulation (GDPR) gives you the right to access your personal data,
+      correct it, delete it and object to its processing. Since <strong>no data of mine
+      exists</strong> — I collect nothing and keep nothing — there&rsquo;s nothing you need
+      to ask me. For the server&rsquo;s technical logs, the request should go to GitHub,
+      through the channels given in their privacy statement.
+    </p>
+
+    <h2>If this page changes</h2>
+    <p>
+      If one day the site were to introduce something that collects data, this page
+      would be updated first, and the date at the top would say so. The full history of
+      changes is public in the
+      <a href="https://github.com/mazzrelaz/sparklingtones-sito">site&rsquo;s repository</a>.
+      The Italian version is the original.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="dentro">
+    <a href="./">SparklingTones</a> &middot;
+    <a href="https://github.com/mazzrelaz/SparklingTones">GitHub</a> &middot;
+    <a href="../privacy.html" hreflang="it" lang="it">Italiano</a>
+  </div>
+</footer>
+
+</body>
+</html>
