@@ -1,5 +1,7 @@
 # sparklingtones.com
 
+*Italiano · [English](README.en.md)*
+
 La pagina di presentazione di [SparklingTones](https://github.com/mazzrelaz/SparklingTones),
 l'app per controllare un Positive Grid Spark 2 dal browser.
 
@@ -8,12 +10,14 @@ l'app per controllare un Positive Grid Spark 2 dal browser.
 
 ## Com'è fatta
 
-Un file HTML, niente altro: nessun build step, nessuna dipendenza, nessuna
+File HTML, niente altro: nessun build step, nessuna dipendenza, nessuna
 richiesta a domini di terzi. I due caratteri (Inter e Space Grotesk, SIL OFL) e
 il logo sono copiati dall'app, così le due cose sembrano la stessa.
 
 ```
-index.html    tutta la pagina, stile compreso
+index.html    tutta la pagina italiana, stile compreso
+privacy.html  la pagina della privacy
+en/           le stesse due pagine in inglese
 CNAME         sparklingtones.com — è questo file che dice a GitHub Pages
               per quale dominio deve rispondere
 fonts/        Inter e Space Grotesk
