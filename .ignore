@@ -1,0 +1,5 @@
+# Le ricerche (Grep, rg) saltano questi file. Git no: restano nel repository.
+# L'inglese non si legge finché l'utente non chiede di aggiornarlo; ci si arriva
+# lo stesso con Read o con `rg --no-ignore`.
+en/
+*.en.md
