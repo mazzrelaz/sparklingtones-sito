@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SparklingTones — control your Spark 2 from the browser</title>
-<meta name="description" content="Web app to organise the presets of a Positive Grid Spark 2 and play them live, over Bluetooth, with no account and no server. Plus an ESP32 pedal.">
+<title>SparklingTones — control your Spark 2 or Spark NEO from the browser</title>
+<meta name="description" content="Web app to organise the presets of a Positive Grid Spark 2 or Spark NEO and play them live, over Bluetooth, with no account and no server. Plus an ESP32 pedal.">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="../icons/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="SparklingTones">
-<meta property="og:description" content="Organise your Spark 2 presets and play them live, from the browser, over Bluetooth.">
+<meta property="og:description" content="Organise your Spark 2 or Spark NEO presets and play them live, from the browser, over Bluetooth.">
 <meta property="og:url" content="https://sparklingtones.com/en/">
 <meta property="og:image" content="https://sparklingtones.com/icons/icon-512.png">
 <meta property="og:locale" content="en_GB">
@@ -188,6 +188,19 @@
   .clip { margin:0 0 34px; }
   .clip video { width:100%; border:1px solid var(--line); border-radius:14px;
                 background:#0a0b0d; }
+  /* il video del pedale: copertina nostra, YouTube solo al clic */
+  section a.video-link { position:relative; display:block; margin:26px 0 10px; overflow:hidden;
+                         border:1px solid var(--line); border-radius:14px; }
+  .video-link img { display:block; width:100%; height:auto; }
+  .video-link .play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+                      background:linear-gradient(transparent 55%, rgba(0,0,0,.35)); }
+  .video-link .play span { width:76px; height:76px; border-radius:50%; background:rgba(227,6,19,.92);
+                           box-shadow:0 0 30px -4px rgba(227,6,19,.8); display:flex; align-items:center;
+                           justify-content:center; transition:transform .15s; }
+  .video-link .play span::before { content:''; margin-left:7px; border-left:24px solid #fff;
+                                   border-top:15px solid transparent; border-bottom:15px solid transparent; }
+  .video-link:hover .play span { transform:scale(1.07); }
+  .video-didascalia { color:var(--faint); font-size:13.5px; margin:0 0 22px; }
   .clip figcaption { color:var(--faint); font-size:13.5px; margin-top:10px; }
 
   /* ---- chiusura ------------------------------------------------------ */
@@ -224,7 +237,7 @@
 <div class="apertura">
   <div class="dentro">
     <img class="logo" src="../icons/logo.svg" alt="SparklingTones">
-    <h1 class="claim">Your Spark 2, <em>from the browser</em>.</h1>
+    <h1 class="claim">Your Spark, <em>from the browser</em>.</h1>
     <p class="sotto">
       Organise as many presets as you like, not just the eight that fit in the amp.
       Then switch to the live view and play them, with buttons big enough to hit
@@ -235,6 +248,7 @@
       <a class="bottone calmo" href="#guide">Getting started</a>
     </div>
     <div class="requisiti">
+      <span class="req">Spark 2 and Spark NEO</span>
       <span class="req">Chrome or Edge</span>
       <span class="req">Windows, Mac, Linux, Android</span>
       <span class="req no">Doesn&rsquo;t work on iPhone and iPad</span>
@@ -248,7 +262,7 @@
     <p class="occhiello">What it does</p>
     <h2>Three things, all done in front of a switched-on amp.</h2>
     <p class="introduzione">
-      The Spark 2 holds eight presets at a time. Everything else &mdash; the sounds you
+      The Spark 2 holds eight presets at a time, the Spark NEO four. Everything else &mdash; the sounds you
       built, the ones you only need for one song, the ones you&rsquo;re still trying
       out &mdash; has nowhere to live. This is that place.
     </p>
@@ -323,19 +337,21 @@
       <li>
         <h3>Open the app and press &laquo;Connect&raquo;</h3>
         <p>
-          The browser asks which Bluetooth device to use: pick the Spark 2.
+          The browser asks which Bluetooth device to use: pick the Spark 2, or
+          &laquo;Spark NEO Control&raquo; if you have the NEO.
           It must be on and <strong>not connected to the official app</strong> &mdash; one
           master at a time. If you can&rsquo;t find it in the list, that&rsquo;s the first
           thing to suspect.
         </p>
       </li>
       <li>
-        <h3>Let it read the eight slots</h3>
+        <h3>Let it read the slots</h3>
         <p>
           As soon as it&rsquo;s connected it starts reading the presets you loaded into the
           amp by itself. It takes a few seconds. They appear at the top, labelled
           <strong>A1&hellip;B4</strong> with the colours of the panel&rsquo;s LEDs: red for
-          bank A, green for bank B.
+          bank A, green for bank B. On the NEO there are four slots, <strong>CH1&hellip;CH4</strong>,
+          and the app works out by itself which amp it&rsquo;s talking to.
         </p>
       </li>
       <li>
@@ -433,7 +449,16 @@
         </span>
       </div>
       <div class="avviso">
-        <strong class="testa">It has been tested on a single Spark 2</strong>
+        <strong class="testa">The Spark NEO works, with a few differences</strong>
+        <span>
+          Reading the slots, the live view, the editor and the knobs are tested on the NEO.
+          It has four slots instead of eight, and it&rsquo;s slower at receiving: a preset that
+          isn&rsquo;t in a slot takes about two seconds instead of one. Not tested yet:
+          writing to a slot and the Jimi Hendrix effects.
+        </span>
+      </div>
+      <div class="avviso">
+        <strong class="testa">It has been tested on a single Spark 2 and a single Spark NEO</strong>
         <span>
           Mine. With another unit, or another firmware, I don&rsquo;t know what happens.
         </span>
@@ -452,10 +477,20 @@
       Spark by itself and changes presets with your foot. Four footswitches for the
       sounds, one to switch halves of the bank without touching what&rsquo;s playing.
     </p>
+    <a class="video-link" href="https://youtube.com/shorts/xbub9KMWcM8" target="_blank" rel="noopener" aria-label="Watch the pedal video on YouTube">
+      <img src="../media/pedale.jpg" alt="The pedal: dark wood, display showing the Rock Solos bank, four footswitches with LEDs and a fifth on the right" width="1200" height="500" loading="lazy">
+      <span class="play"><span></span></span>
+    </a>
+    <p class="video-didascalia">The pedal at work. Opens on YouTube.</p>
     <p>
-      It&rsquo;s halfway there: the firmware runs on a bare board, the real device
-      &mdash; footswitches, LEDs, display &mdash; isn&rsquo;t built yet. But the interesting
-      part has already been measured, and it isn&rsquo;t bandwidth:
+      It works with the Spark 2 and the Spark NEO: if either one is on, it recognises it
+      and connects by itself. On the NEO changing preset is slower &mdash; a little over
+      half a second against a fifth &mdash; but still usable.
+    </p>
+    <p>
+      It&rsquo;s built and it plays &mdash; footswitches, LEDs, display, battery &mdash; and the
+      firmware is being polished. The interesting part has been measured, and it
+      isn&rsquo;t bandwidth:
     </p>
 
     <table>
@@ -502,6 +537,9 @@
           decoration and isn&rsquo;t.</li>
       <li>The ack confirms receipt, not execution: the absence of errors is not a
           verification.</li>
+      <li>The <strong>Spark NEO</strong> speaks the same protocol, with four slots instead of
+          eight and notifications that never go over 20 bytes. It does accept 128-byte
+          chunks, though, and they&rsquo;re the way to send it a preset in half the time.</li>
     </ul>
     <p style="margin-top:26px">
       <a class="bottone calmo" href="https://github.com/mazzrelaz/SparklingTones">The code on GitHub</a>
