@@ -211,6 +211,15 @@
   footer p { max-width:64ch; margin:0 auto 12px; text-align:center; }
   footer a { color:var(--dim); }
 
+  /* ---- le foto del pedale, due affiancate ---- */
+  .foto-pedale { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:30px 0 8px; }
+  .foto-pedale figure { margin:0; }
+  .foto-pedale img { display:block; width:100%; height:auto; border-radius:12px; border:1px solid var(--line); }
+  .foto-pedale figcaption { color:var(--faint); font-size:13.5px; margin-top:8px; }
+  .schede + .foto-pedale { margin-top:30px; }
+  #pedale .schede, #pedal .schede { margin-top:30px; }
+  @media (max-width:640px) { .foto-pedale { grid-template-columns:1fr; } }
+
   @media (max-width:640px) {
     section { padding:54px 0; }
     .apertura { padding:60px 0 54px; }
@@ -476,13 +485,12 @@
 
 <section id="pedal">
   <div class="dentro">
-    <p class="occhiello">Work in progress</p>
+    <p class="occhiello">Build it yourself</p>
     <h2>The pedal</h2>
     <p class="introduzione">
       The live view, detached from the phone. An ESP32 takes the banks from the app over
       Bluetooth, keeps them in memory and then runs on its own: it connects to the
-      Spark by itself and changes presets with your foot. Four footswitches for the
-      sounds, one to switch halves of the bank without touching what&rsquo;s playing.
+      Spark by itself and changes presets with your foot. And now it runs the looper too.
     </p>
     <a class="video-link" href="https://www.youtube.com/watch?v=zt7lX5W87WA" target="_blank" rel="noopener" aria-label="Watch the pedal video on YouTube">
       <img src="../media/pedale.jpg" alt="The pedal: dark wood, display showing the Rock Solos bank, four footswitches with LEDs and a fifth on the right" width="1200" height="500" loading="lazy">
@@ -494,10 +502,72 @@
       and connects by itself. On the NEO changing preset is slower &mdash; a little over
       half a second against a fifth &mdash; but still usable.
     </p>
+    <div class="schede">
+      <div class="scheda">
+        <h3>Presets underfoot</h3>
+        <p>
+          Four footswitches for the sounds, the fifth to switch halves of the bank without
+          touching what&rsquo;s playing. A red or green LED shows which one is on, the
+          display shows its name.
+        </p>
+        <p>
+          The bank buttons step through the amp&rsquo;s own slots, which change
+          <strong>instantly</strong>, and up to eight banks sent from the app, which stay in
+          the pedal even with the power off.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>The looper</h3>
+        <p>
+          The Spark 2&rsquo;s looper with your feet: record and overdub, undo and redo,
+          play, stop, clear. From 1 to 16 bars or free length, and tap tempo.
+        </p>
+        <p>
+          Before recording it counts in four beats with a click, an LED beats the tempo,
+          and a ring on the display fills up bar by bar.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>MIDI controller</h3>
+        <p>
+          Hold two footswitches together and it becomes a MIDI controller: Program Change
+          for presets, Control Change for effects.
+        </p>
+        <p>
+          Over USB for a computer, over Bluetooth for an iPad (BIAS FX).
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>On battery</h3>
+        <p>
+          An 18650 cell inside the case: <strong>about 17 hours</strong> of use, measured.
+          It plays while charging from its own USB-C socket, and the display shows how much
+          charge is left.
+        </p>
+      </div>
+    </div>
+
+    <div class="foto-pedale">
+      <figure>
+        <img src="../media/pedale-banco.jpg" alt="The pedal with a bank: A3 is playing and the LED above the third footswitch is red" width="1600" height="901" loading="lazy">
+        <figcaption>A bank: A3 playing, red LED for half A.</figcaption>
+      </figure>
+      <figure>
+        <img src="../media/pedale-looper.jpg" alt="The pedal in the looper while recording: red LED on the first footswitch, the tempo LED lit and the bar ring on the display" width="1600" height="901" loading="lazy">
+        <figcaption>The looper recording: the tempo LED beats, the ring fills up.</figcaption>
+      </figure>
+    </div>
+
+    <p style="margin-top:22px">
+      It&rsquo;s built and it plays. <strong>The guide explains how to build one</strong>, piece by
+      piece &mdash; parts, diagrams, assembly, firmware &mdash; and how to use it.
+    </p>
+    <p class="azioni" style="margin:0 0 34px; justify-content:flex-start">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/guida-pedale.en.html">The pedal guide</a>
+    </p>
+
     <p>
-      It&rsquo;s built and it plays &mdash; footswitches, LEDs, display, battery &mdash; and the
-      firmware is being polished. The interesting part has been measured, and it
-      isn&rsquo;t bandwidth:
+      The interesting part has been measured, and it isn&rsquo;t bandwidth:
     </p>
 
     <table>

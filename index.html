@@ -210,6 +210,15 @@
   footer p { max-width:64ch; margin:0 auto 12px; text-align:center; }
   footer a { color:var(--dim); }
 
+  /* ---- le foto del pedale, due affiancate ---- */
+  .foto-pedale { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:30px 0 8px; }
+  .foto-pedale figure { margin:0; }
+  .foto-pedale img { display:block; width:100%; height:auto; border-radius:12px; border:1px solid var(--line); }
+  .foto-pedale figcaption { color:var(--faint); font-size:13.5px; margin-top:8px; }
+  .schede + .foto-pedale { margin-top:30px; }
+  #pedale .schede, #pedal .schede { margin-top:30px; }
+  @media (max-width:640px) { .foto-pedale { grid-template-columns:1fr; } }
+
   @media (max-width:640px) {
     section { padding:54px 0; }
     .apertura { padding:60px 0 54px; }
@@ -520,13 +529,12 @@
 
 <section id="pedale">
   <div class="dentro">
-    <p class="occhiello">In lavorazione</p>
+    <p class="occhiello">Da costruire</p>
     <h2>Il pedale</h2>
     <p class="introduzione">
       La vista live, staccata dal telefono. Un ESP32 prende i banchi dall&rsquo;app via
       Bluetooth, se li tiene in memoria e poi è autonomo: si collega da solo allo
-      Spark e cambia preset col piede. Quattro footswitch per i suoni, uno per
-      cambiare metà del banco senza toccare quello che sta suonando.
+      Spark e cambia preset col piede. E adesso comanda anche il looper.
     </p>
     <a class="video-link" href="https://www.youtube.com/watch?v=zt7lX5W87WA" target="_blank" rel="noopener" aria-label="Guarda il video del pedale su YouTube">
       <img src="media/pedale.jpg" alt="Il pedale: legno scuro, display col banco Rock Solos, quattro footswitch con i LED e il quinto a destra" width="1200" height="500" loading="lazy">
@@ -538,9 +546,72 @@
       collega da solo. Sul NEO cambiare preset è più lento &mdash; poco più di mezzo
       secondo contro un quinto &mdash; ma resta usabile.
     </p>
+    <div class="schede">
+      <div class="scheda">
+        <h3>Preset col piede</h3>
+        <p>
+          Quattro footswitch per i suoni, il quinto per cambiare metà del banco senza
+          toccare quello che sta suonando. Un LED rosso o verde dice quale suona, il
+          display dice il nome.
+        </p>
+        <p>
+          I tasti banco girano fra gli slot dell&rsquo;ampli, che cambiano
+          <strong>all&rsquo;istante</strong>, e fino a otto banchi mandati dall&rsquo;app,
+          che restano nel pedale anche a corrente staccata.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>Il looper</h3>
+        <p>
+          Il looper dello Spark 2 coi piedi: registra e sovraincidi, annulla e ripeti,
+          suona, ferma, cancella. Battute da 1 a 16 o libere, e il tap tempo.
+        </p>
+        <p>
+          Prima di registrare conta quattro tempi col click, un LED batte il tempo, e sul
+          display un anello si riempie battuta dopo battuta.
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>Pedaliera MIDI</h3>
+        <p>
+          Due footswitch tenuti insieme, e diventa una pedaliera MIDI: Program Change per
+          i preset, Control Change per gli effetti.
+        </p>
+        <p>
+          Via USB per il computer, in Bluetooth per l&rsquo;iPad (BIAS FX).
+        </p>
+      </div>
+      <div class="scheda">
+        <h3>A batteria</h3>
+        <p>
+          Una cella 18650 dentro la scatola: <strong>circa 17 ore</strong> di uso,
+          misurate. Suona anche mentre si ricarica dalla sua presa USB-C, e il display
+          mostra quanta carica resta.
+        </p>
+      </div>
+    </div>
+
+    <div class="foto-pedale">
+      <figure>
+        <img src="media/pedale-banco.jpg" alt="Il pedale con un banco: suona A3 e il LED sopra il terzo footswitch è rosso" width="1600" height="901" loading="lazy">
+        <figcaption>Un banco: suona A3, LED rosso per la metà A.</figcaption>
+      </figure>
+      <figure>
+        <img src="media/pedale-looper.jpg" alt="Il pedale nel looper mentre registra: LED rosso sul primo footswitch, il LED del tempo acceso e l'anello delle battute sul display" width="1600" height="901" loading="lazy">
+        <figcaption>Il looper mentre registra: il LED del tempo batte, l&rsquo;anello si riempie.</figcaption>
+      </figure>
+    </div>
+
+    <p style="margin-top:22px">
+      È costruito e suona. <strong>La guida spiega come rifarlo</strong>, pezzo per pezzo
+      &mdash; componenti, schemi, montaggio, firmware &mdash; e come si usa.
+    </p>
+    <p class="azioni" style="margin:0 0 34px; justify-content:flex-start">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/guida-pedale.html">La guida del pedale</a>
+    </p>
+
     <p>
-      È costruito e suona &mdash; footswitch, LED, display, batteria &mdash; e il firmware
-      si sta rifinendo. La parte interessante è misurata, e non è la banda:
+      La parte interessante è misurata, e non è la banda:
     </p>
 
     <table>
