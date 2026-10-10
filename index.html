@@ -219,6 +219,15 @@
   #pedale .schede, #pedal .schede { margin-top:30px; }
   @media (max-width:640px) { .foto-pedale { grid-template-columns:1fr; } }
 
+  /* ---- il caffè: le donazioni, su Buy Me a Coffee. Un link e basta: la pagina
+     non carica niente di loro (niente widget, niente script), e la privacy resta vera. */
+  .bottone.caffe { background:var(--gold); color:#1a1405; border-color:#ffd760; }
+  .bottone.caffe:hover { box-shadow:0 0 24px -4px rgba(240,192,64,.75); }
+  .barra .bottone.caffe { padding:8px 12px; }
+  .chiusura .caffe-riga { margin-top:34px; padding-top:30px; border-top:1px solid var(--line-soft); }
+  .chiusura .caffe-riga p { color:var(--dim); margin:0 auto 18px; max-width:52ch; }
+  @media (max-width:640px) { .barra .bottone.caffe .parola { display:none; } }
+
   @media (max-width:640px) {
     section { padding:54px 0; }
     .apertura { padding:60px 0 54px; }
@@ -240,6 +249,7 @@
       <a href="#protocollo">Il protocollo</a>
     </nav>
     <a class="lingua" href="en/" hreflang="en" lang="en" title="English version">EN</a>
+    <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener" title="Offrimi un caffè">☕<span class="parola"> Offrimi un caffè</span></a>
     <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
   </div>
 </header>
@@ -255,6 +265,7 @@
     </p>
     <div class="azioni">
       <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
+      <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a>
       <a class="bottone calmo" href="#guida">Come si comincia</a>
     </div>
     <div class="requisiti">
@@ -676,6 +687,10 @@
       Niente da installare, niente da registrare, niente da pagare.
     </p>
     <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
+    <div class="caffe-riga">
+      <p>SparklingTones è gratis e lo resterà: niente pubblicità, niente account. Lo scrivo nel tempo libero; se ti è utile, un caffè mi aiuta a continuare.</p>
+      <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a>
+    </div>
   </div>
 </section>
 
@@ -695,6 +710,7 @@
     <p style="margin-top:20px">
       <a href="https://github.com/mazzrelaz/SparklingTones">GitHub</a> &middot;
       <a href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a> &middot;
+      <a href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a> &middot;
       <a href="privacy.html">Privacy</a> &middot;
       <a href="en/" hreflang="en" lang="en">English</a>
     </p>
