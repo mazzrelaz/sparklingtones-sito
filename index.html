@@ -119,40 +119,12 @@
   .scheda p { color:var(--dim); margin-bottom:0; }
   .scheda p + p { margin-top:12px; }
 
-  /* ---- il disegno dei pulsantoni ------------------------------------
-     Non è una fotografia dell'app: è un disegno fatto qui con due regole di
-     CSS, per far vedere la forma della vista live finché non c'è una clip
-     vera. Le proporzioni e i colori sono quelli veri. */
-  .pulsantiera { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px;
-                 background:#0a0b0d; border:1px solid var(--line); border-radius:14px;
-                 padding:20px; margin-top:34px; }
-  /* `min-width:0` non è decorazione: i nomi dei preset sono `nowrap`, e in un
-     grid il minimo di una colonna è il suo contenuto intero. Senza questo, un
-     nome lungo allarga la pagina e su un telefono sborda tutto a destra. */
-  .meta { display:grid; grid-template-rows:repeat(4,1fr); gap:10px; min-width:0; }
-  /* Dal 16 ottobre 2026 i pulsantoni dell'app sono neri con le piste di un
-     circuito, senza LED: chi non suona è più scuro col bordo grigio sottile,
-     chi suona ha il bordo sfumato azzurro-viola-fucsia, la luce dietro il nome
-     e la corrente che scorre sulle piste (media/circuito-elettroni.svg, lo
-     stesso disegno animato dell'app). */
-  .tasto { position:relative; display:flex; align-items:center; justify-content:center; padding:15px 12px;
-           min-width:0; background:#050608; border:1px solid #2e3036; border-radius:11px; overflow:hidden;
-           font-family:var(--strumento); font-weight:600; font-size:14px; color:#eef0f3;
-           white-space:nowrap; text-overflow:ellipsis; filter:brightness(.62) saturate(.85); }
-  .tasto::before { content:''; position:absolute; inset:0; pointer-events:none;
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='90'%3E%3Cg fill='none' stroke='%237b6cff' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M0 20h30l10 10h40M120 70H90l-10-10H50l-8 8H0M60 0v14l8 8M20 90V76l10-10'/%3E%3C/g%3E%3Cg fill='%237b6cff' fill-opacity='.22'%3E%3Ccircle cx='80' cy='30' r='2'/%3E%3Ccircle cx='42' cy='68' r='2'/%3E%3Ccircle cx='68' cy='22' r='2'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 120px 90px; }
-  .tasto span { position:relative; z-index:1; overflow:hidden; text-overflow:ellipsis; }
-  .tasto.acceso { filter:none; border:2px solid transparent;
-    background:linear-gradient(rgba(10,9,18,.82), rgba(5,6,8,.82)) padding-box,
-               linear-gradient(135deg, #2be4ff, #7b5cff 55%, #ff2bd6) border-box;
-    box-shadow:0 0 14px rgba(123,92,255,.55), 0 0 30px rgba(255,43,214,.22); }
-  .tasto.acceso::before { background:url('media/circuito-elettroni.svg') 0 0 / 120px 90px; }
-  .tasto.acceso::after { content:''; position:absolute; left:10%; right:10%; top:22%; bottom:22%;
-    border-radius:50%; pointer-events:none; filter:blur(10px);
-    background:radial-gradient(ellipse at center, rgba(255,43,214,.55), rgba(123,92,255,.35) 45%, rgba(43,228,255,0) 75%); }
-  .tasto.acceso span { color:#fff; text-shadow:0 0 6px #fff, 0 0 16px rgba(255,43,214,.7); }
-  .tasto.vuoto { background:none; border-style:dashed; filter:none; color:var(--faint); }
-  .tasto.vuoto::before { opacity:.4; }
+  /* ---- la vista live ------------------------------------------------
+     Una schermata vera dell'app (19 ottobre 2026): il disegno fatto qui con
+     le regole CSS non tornava con i pulsantoni veri. È la stessa della guida.
+     Tagliata sotto l'intestazione, con B1 che suona. */
+  .schermata-live { display:block; width:min(100%, 340px); height:auto; margin:34px auto 0;
+                    border:1px solid var(--line); border-radius:22px; }
   .didascalia { color:var(--faint); font-size:13.5px; margin-top:12px; text-align:center; }
 
   /* ---- le tappe ----------------------------------------------------- */
@@ -242,7 +214,6 @@
     section { padding:54px 0; }
     .apertura { padding:60px 0 54px; }
     nav { display:none; }
-    .pulsantiera { grid-template-columns:minmax(0,1fr); gap:10px; }
     ol.tappe > li { padding-left:46px; }
   }
 </style>
@@ -358,21 +329,9 @@
       </div>
     </div>
 
-    <div class="pulsantiera" aria-hidden="true">
-      <div class="meta">
-        <div class="tasto"><span>DG - Shine On</span></div>
-        <div class="tasto acceso"><span>DG - Comfortably Numb</span></div>
-        <div class="tasto"><span>SV - For the Love of God</span></div>
-        <div class="tasto"><span>Poles Apart</span></div>
-      </div>
-      <div class="meta">
-        <div class="tasto"><span>Nylon Reverb</span></div>
-        <div class="tasto"><span>CS - Europa</span></div>
-        <div class="tasto"><span>Clean Tube</span></div>
-        <div class="tasto vuoto"><span>vuoto</span></div>
-      </div>
-    </div>
-    <p class="didascalia">La vista live, in due banchi da quattro come i LED dell&rsquo;ampli.</p>
+    <img class="schermata-live" src="media/app-live.webp" width="520" height="957" loading="lazy"
+         alt="La vista live: otto pulsantoni neri col disegno di un circuito, quattro a sinistra e quattro a destra; quello che suona ha il bordo sfumato e la luce viola">
+    <p class="didascalia">La vista live: quattro preset a sinistra e quattro a destra, come i due banchi dell&rsquo;ampli.</p>
     <a class="video-link verticale" href="https://youtube.com/shorts/xbub9KMWcM8" target="_blank" rel="noopener" aria-label="Guarda il video dell'app su YouTube">
       <img src="media/app.jpg" alt="L'editor dell'app sul telefono: la catena effetti e le manopole dell'ampli" width="540" height="960" loading="lazy">
       <span class="play"><span></span></span>
