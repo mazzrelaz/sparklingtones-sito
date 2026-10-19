@@ -130,19 +130,36 @@
      grid il minimo di una colonna è il suo contenuto intero. Senza questo, un
      nome lungo allarga la pagina e su un telefono sborda tutto a destra. */
   .meta { display:grid; grid-template-rows:repeat(4,1fr); gap:10px; min-width:0; }
-  .tasto { display:flex; align-items:center; gap:11px; padding:13px 15px; min-width:0;
-           background:var(--panel); border:1px solid var(--line); border-radius:11px;
-           font-family:var(--strumento); font-weight:500; font-size:14px;
-           color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .tasto .led { width:9px; height:9px; border-radius:50%; flex:none;
-                background:var(--faint); }
-  .tasto .led.v { background:var(--green); box-shadow:0 0 8px rgba(127,224,138,.7); }
-  .tasto .led.b { background:var(--blu);  box-shadow:0 0 8px rgba(58,160,255,.7); }
-  .tasto .led.r { background:#ff3b30; box-shadow:0 0 8px rgba(255,59,48,.7); }
-  .tasto .led.g { background:var(--gold); box-shadow:0 0 8px rgba(240,192,64,.7); }
-  .tasto.acceso { border-color:#2f6ea8; background:#10233a;
-                  box-shadow:0 0 0 1px rgba(58,160,255,.35), 0 0 26px -6px rgba(58,160,255,.6); }
-  .tasto.vuoto { color:var(--faint); }
+  /* Dal 16 ottobre 2026 i pulsantoni dell'app sono neri con le piste di un
+     circuito, senza LED: chi non suona è più scuro col bordo grigio sottile,
+     chi suona ha il bordo sfumato azzurro-viola-fucsia, la luce dietro il nome
+     e la corrente che scorre sulle piste (media/circuito-elettroni.svg, lo
+     stesso disegno animato dell'app). */
+  .tasto { position:relative; display:flex; align-items:center; justify-content:center; padding:15px 12px;
+           min-width:0; background:#050608; border:1px solid #2e3036; border-radius:11px; overflow:hidden;
+           font-family:var(--strumento); font-weight:600; font-size:14px; color:#eef0f3;
+           white-space:nowrap; text-overflow:ellipsis; filter:brightness(.62) saturate(.85); }
+  .tasto::before { content:''; position:absolute; inset:0; pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='90'%3E%3Cg fill='none' stroke='%237b6cff' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M0 20h30l10 10h40M120 70H90l-10-10H50l-8 8H0M60 0v14l8 8M20 90V76l10-10'/%3E%3C/g%3E%3Cg fill='%237b6cff' fill-opacity='.22'%3E%3Ccircle cx='80' cy='30' r='2'/%3E%3Ccircle cx='42' cy='68' r='2'/%3E%3Ccircle cx='68' cy='22' r='2'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 120px 90px; }
+  .tasto span { position:relative; z-index:1; overflow:hidden; text-overflow:ellipsis; }
+  .tasto.acceso { filter:none; border:2px solid transparent;
+    background:linear-gradient(rgba(10,9,18,.82), rgba(5,6,8,.82)) padding-box,
+               linear-gradient(135deg, #2be4ff, #7b5cff 55%, #ff2bd6) border-box;
+    box-shadow:0 0 14px rgba(123,92,255,.55), 0 0 30px rgba(255,43,214,.22); }
+  .tasto.acceso::before { background:url('media/circuito-elettroni.svg') 0 0 / 120px 90px; }
+  .tasto.acceso::after { content:''; position:absolute; left:10%; right:10%; top:22%; bottom:22%;
+    border-radius:50%; pointer-events:none; filter:blur(10px);
+    background:radial-gradient(ellipse at center, rgba(255,43,214,.55), rgba(123,92,255,.35) 45%, rgba(43,228,255,0) 75%); }
+  .tasto.acceso span { color:#fff; text-shadow:0 0 6px #fff, 0 0 16px rgba(255,43,214,.7); }
+  .tasto.vuoto { background:none; border-style:dashed; filter:none; color:var(--faint); }
+  .tasto.vuoto::before { opacity:.4; }
+  /* una funzione che sta arrivando */
+  .in-arrivo { margin-top:18px; background:#100e05; border:1px solid #4a3f15; border-radius:14px; padding:20px 24px; }
+  .in-arrivo h3 { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .in-arrivo .bollo { font:700 11px var(--strumento); letter-spacing:.08em; text-transform:uppercase;
+                      color:#ffd21e; border:1px solid #6b5a1e; background:#1d1806; border-radius:6px; padding:2px 8px; }
+  .in-arrivo p { color:var(--dim); margin:0; }
+  .in-arrivo p + p { margin-top:10px; }
   .didascalia { color:var(--faint); font-size:13.5px; margin-top:12px; text-align:center; }
 
   /* ---- le tappe ----------------------------------------------------- */
@@ -324,19 +341,21 @@
         <h3>Suona</h3>
         <p>
           Una vista <em>Live</em> fatta per essere usata mentre suoni, non per
-          catalogare: banchi da otto pulsanti grandi, un LED per riconoscere il suono
-          a colpo d&rsquo;occhio.
+          catalogare: banchi da otto pulsanti grandi, e quello che suona si accende
+          come un circuito sotto corrente.
         </p>
         <p>
           Un preset già caricato sull&rsquo;ampli si attiva <strong>all&rsquo;istante</strong>;
-          uno che non c&rsquo;è viene trasmesso per intero in circa un secondo.
+          uno che non c&rsquo;è viene trasmesso per intero in circa un secondo. Tieni premuto
+          un pulsante due secondi e sei già nelle sue manopole.
         </p>
       </div>
       <div class="scheda">
         <h3>Regola</h3>
         <p>
           Un editor della catena effetti che agisce <strong>sul suono che sta
-          suonando</strong>: giri una manopola e l&rsquo;ampli risponde.
+          suonando</strong>: ogni pedale e ogni ampli è disegnato, giri la manopola sul
+          disegno e l&rsquo;ampli risponde.
         </p>
         <p>
           Prima di aprirsi rilegge sempre lo stato vero dall&rsquo;ampli, perché se hai
@@ -346,18 +365,31 @@
       </div>
     </div>
 
+    <div class="in-arrivo">
+      <h3>✨ Genera con l&rsquo;IA <span class="bollo">in fase di sviluppo</span></h3>
+      <p>
+        Descrivi a parole il suono che cerchi, e l&rsquo;intelligenza artificiale costruisce il
+        preset scegliendo solo fra gli effetti e gli ampli che il tuo Spark ha davvero. Poi lo
+        ascolti, lo ritocchi nell&rsquo;editor e, se ti piace, lo salvi.
+      </p>
+      <p>
+        È ancora in prova e non è nel menu dell&rsquo;app: arriva quando funziona bene. Servirà una
+        chiave tua di OpenAI o Anthropic; un preset costa pochi centesimi, pagati a loro.
+      </p>
+    </div>
+
     <div class="pulsantiera" aria-hidden="true">
       <div class="meta">
-        <div class="tasto"><span class="led v"></span>DG - Shine On</div>
-        <div class="tasto acceso"><span class="led b"></span>DG - Comfortably Numb</div>
-        <div class="tasto"><span class="led r"></span>SV - For the Love of God</div>
-        <div class="tasto"><span class="led b"></span>Poles Apart</div>
+        <div class="tasto"><span>DG - Shine On</span></div>
+        <div class="tasto acceso"><span>DG - Comfortably Numb</span></div>
+        <div class="tasto"><span>SV - For the Love of God</span></div>
+        <div class="tasto"><span>Poles Apart</span></div>
       </div>
       <div class="meta">
-        <div class="tasto"><span class="led g"></span>Nylon Reverb</div>
-        <div class="tasto"><span class="led r"></span>CS - Europa</div>
-        <div class="tasto"><span class="led v"></span>Clean Tube</div>
-        <div class="tasto vuoto"><span class="led"></span>vuoto</div>
+        <div class="tasto"><span>Nylon Reverb</span></div>
+        <div class="tasto"><span>CS - Europa</span></div>
+        <div class="tasto"><span>Clean Tube</span></div>
+        <div class="tasto vuoto"><span>vuoto</span></div>
       </div>
     </div>
     <p class="didascalia">La vista live, in due banchi da quattro come i LED dell&rsquo;ampli.</p>
@@ -380,7 +412,7 @@
 
     <ol class="tappe">
       <li>
-        <h3>Apri l&rsquo;app e premi &laquo;Connetti&raquo;</h3>
+        <h3>Apri l&rsquo;app e premi &laquo;Collega&raquo;</h3>
         <p>
           Il browser ti chiede quale apparecchio Bluetooth usare: scegli lo Spark 2, o
           &laquo;Spark NEO Control&raquo; se hai il NEO.
@@ -403,8 +435,8 @@
         <p>
           Se usi l&rsquo;app ufficiale, esporta da lì il <code>preset_backup.zip</code> e
           caricalo: entra tutta la tua collezione in un colpo. Altrimenti la libreria si
-          costruisce man mano, con &laquo;Leggi il suono corrente&raquo; ogni volta che trovi
-          qualcosa che ti piace.
+          costruisce man mano, con &laquo;Importa il suono che sta suonando&raquo; (dal bollino
+          dell&rsquo;ampli, in alto) ogni volta che trovi qualcosa che ti piace.
         </p>
       </li>
       <li>
@@ -507,7 +539,8 @@
           che manda l&rsquo;app ufficiale appena si connette. Basta collegare l&rsquo;app ufficiale
           una volta e da lì in poi funzionano, anche dopo che l&rsquo;hai chiusa. L&rsquo;app li
           segna con un bollo <strong>JH</strong>, così lo sai prima di sceglierne uno e
-          non dopo averlo sentito muto.
+          non dopo averlo sentito muto. Se il pacchetto non ce l&rsquo;hai, dillo all&rsquo;app nelle
+          Impostazioni: quegli effetti e i preset che li usano spariscono dalla vista.
         </span>
       </div>
       <div class="avviso">
