@@ -34,7 +34,7 @@
   /* Palette presa di peso dall'app, così il sito e il programma sembrano la
      stessa cosa: il rosso è quello del logo, non uno scelto a parte. */
   :root {
-    --bg:#000000; --panel:#121316; --line:#26282e; --line-soft:#1b1d21;
+    --bg:#1e232b; --panel:#2a313c; --line:#3a4351; --line-soft:#303844; --alt:#222831;
     --text:#e8e8ea; --dim:#8a8f98; --faint:#5a5f68;
     --accent:#e30613; --green:#7fe08a; --gold:#f0c040; --blu:#3aa0ff;
     --font:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -51,7 +51,7 @@
   .dentro { width:100%; max-width:var(--max); margin:0 auto; padding:0 22px; }
 
   /* ---- barra in alto ------------------------------------------------ */
-  header { position:sticky; top:0; z-index:10; background:rgba(0,0,0,.86);
+  header { position:sticky; top:0; z-index:10; background:rgba(30,35,43,.92);
            backdrop-filter:blur(10px); border-bottom:1px solid var(--line-soft); }
   .barra { display:flex; align-items:center; gap:18px; height:60px; }
   .barra .logo { height:22px; width:auto; margin-right:auto; }
@@ -71,6 +71,7 @@
                    box-shadow:none; }
   .bottone.calmo:hover { border-color:var(--dim); box-shadow:none; }
   .barra .bottone { padding:8px 15px; font-size:14px; }
+  .barra nav a, .barra .bottone { white-space:nowrap; }
 
   /* L'altra lingua: un link e basta, niente script. La pagina inglese sta in
      `en/` ed è una copia tradotta di questa, aggiornata solo quando si decide. */
@@ -88,10 +89,11 @@
               width:900px; height:600px; transform:translateX(-50%);
               background:radial-gradient(ellipse at center, rgba(227,6,19,.20), transparent 62%);
               pointer-events:none; }
+  .apertura::before { display:none; }
   .apertura .dentro { position:relative; }
   .apertura .logo { height:52px; width:auto; margin:0 auto 26px; }
   .claim { font-family:var(--strumento); font-weight:700; font-size:clamp(28px,5.2vw,44px);
-           line-height:1.18; letter-spacing:-.02em; margin:0 auto 18px; max-width:20ch; }
+           line-height:1.18; letter-spacing:-.02em; margin:0 auto 18px; max-width:26ch; }
   .claim em { color:var(--accent); font-style:normal; }
   .sotto { color:var(--dim); font-size:18px; max-width:56ch; margin:0 auto 32px; }
   .azioni { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:30px; }
@@ -104,6 +106,15 @@
 
   /* ---- sezioni ------------------------------------------------------ */
   section { padding:72px 0; border-bottom:1px solid var(--line-soft); }
+  section:nth-of-type(even) { background:var(--alt); }
+  .schede.quattro { grid-template-columns:repeat(2, 1fr); }
+  @media (max-width:640px) { .schede.quattro { grid-template-columns:1fr; } }
+  .schede + .tris { margin-top:34px; }
+  .tris { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin:40px 0 0; }
+  .tris figure { margin:0; }
+  .tris img { display:block; width:100%; height:auto; aspect-ratio:9 / 17; object-fit:cover; object-position:top; border-radius:18px; border:1px solid var(--line); }
+  .tris figcaption { color:var(--dim); font-size:14px; text-align:center; margin-top:10px; }
+  @media (max-width:640px) { .tris { grid-template-columns:1fr 1fr; } .tris figure:first-child { grid-column:1 / -1; max-width:60%; margin:0 auto; } }
   h2 { font-family:var(--strumento); font-weight:700; letter-spacing:-.015em;
        font-size:clamp(23px,3.4vw,30px); margin:0 0 10px; }
   .occhiello { font-family:var(--strumento); font-size:12px; font-weight:700;
@@ -114,6 +125,10 @@
   p { margin:0 0 14px; }
 
   .schede { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  /* righe incomplete centrate: cinque schede fanno 3 + 2 nel mezzo, non 3 + 2 a sinistra */
+  .schede:not(.quattro) { display:flex; flex-wrap:wrap; justify-content:center; }
+  .schede:not(.quattro) > .scheda { flex:0 1 calc((100% - 36px) / 3); }
+  @media (max-width:760px) { .schede:not(.quattro) > .scheda { flex-basis:100%; } }
   .scheda { background:var(--panel); border:1px solid var(--line); border-radius:14px;
             padding:24px; }
   .scheda p { color:var(--dim); margin-bottom:0; }
@@ -181,6 +196,19 @@
   .video-link .play span::before { content:''; margin-left:7px; border-left:24px solid #fff;
                                    border-top:15px solid transparent; border-bottom:15px solid transparent; }
   .video-link:hover .play span { transform:scale(1.07); }
+  .coppia { display:grid; grid-template-columns:1fr 1fr; gap:18px; max-width:560px; margin:34px auto 0; }
+  .coppia figure { margin:0; }
+  .coppia img { display:block; width:100%; height:auto; border-radius:18px; border:1px solid rgba(255,255,255,.08); }
+  .coppia figcaption { color:var(--dim); font-size:14px; text-align:center; margin-top:8px; }
+  .video-schede { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin:30px 0 0; }
+  .video-scheda { display:block; padding:20px 22px; border-radius:16px; background:var(--panel);
+                  border:1px solid rgba(255,255,255,.08); color:inherit; text-decoration:none; }
+  .video-scheda:hover { border-color:rgba(227,6,19,.6); }
+  .video-scheda b { color:var(--text); display:block; font-size:18px; margin-bottom:4px; }
+  .video-scheda span { color:var(--dim); font-size:15px; }
+  .video-scheda b::before { content:'▶'; color:#e30613; margin-right:10px; }
+  .schermata-pc { display:block; width:100%; height:auto; margin:34px 0 34px; border-radius:14px;
+                  border:1px solid rgba(255,255,255,.08); }
   .video-link.verticale { max-width:300px; margin:34px auto 10px; }
   .video-didascalia.centro { text-align:center; }
   .video-didascalia { color:var(--faint); font-size:13.5px; margin:0 0 22px; }
@@ -208,7 +236,7 @@
   .barra .bottone.caffe { padding:8px 12px; }
   .chiusura .caffe-riga { margin-top:34px; padding-top:30px; border-top:1px solid var(--line-soft); }
   .chiusura .caffe-riga p { color:var(--dim); margin:0 auto 18px; max-width:52ch; }
-  @media (max-width:640px) { .barra .bottone.caffe .parola { display:none; } }
+  @media (max-width:900px) { .barra .bottone.caffe .parola { display:none; } }
 
   @media (max-width:640px) {
     section { padding:54px 0; }
@@ -224,14 +252,15 @@
   <div class="dentro barra">
     <img class="logo" src="icons/logo.svg" alt="SparklingTones">
     <nav>
-      <a href="#cosa-fa">Cosa fa</a>
+      <a href="#cosa-fa">Telefono</a>
+      <a href="#computer">Computer</a>
       <a href="#guida">Guida</a>
       <a href="#pedale">Il pedale</a>
       <a href="#protocollo">Il protocollo</a>
+      <a href="#video">Video</a>
     </nav>
     <a class="lingua" href="en/" hreflang="en" lang="en" title="English version">EN</a>
     <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener" title="Offrimi un caffè">☕<span class="parola"> Offrimi un caffè</span></a>
-    <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
   </div>
 </header>
 
@@ -240,14 +269,12 @@
     <img class="logo" src="icons/logo.svg" alt="SparklingTones">
     <h1 class="claim">Il tuo Spark, <em>dal browser</em>.</h1>
     <p class="sotto">
-      Organizza tutti i preset che vuoi, non solo gli otto che ci stanno nell&rsquo;ampli.
-      Poi passa alla vista live e suonali, con pulsanti grandi abbastanza da premerli
-      al buio. Nessun account, nessun server: la tua libreria resta nel tuo browser.
+      Tutti i tuoi preset in una libreria, non solo gli otto dell&rsquo;ampli. Suonali dal vivo,
+      regola il suono mentre suoni. Sul telefono e sul computer, gratis, senza account.
     </p>
-    <div class="azioni">
-      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
-      <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a>
-      <a class="bottone calmo" href="#guida">Come si comincia</a>
+    <div class="azioni" id="apri">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">📱 Apri sul telefono</a>
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/pc.html?lang=it">💻 Apri sul computer</a>
     </div>
     <div class="requisiti">
       <span class="req">Spark 2 e Spark NEO</span>
@@ -277,70 +304,91 @@
 </section>
 -->
 
+<section id="video">
+  <div class="dentro">
+    <p class="occhiello">Video</p>
+    <h2>Guardala al lavoro, una sezione alla volta.</h2>
+    <div class="video-schede">
+      <a class="video-scheda" href="https://www.youtube.com/@SparklingTones/shorts" target="_blank" rel="noopener">
+        <b>L&rsquo;app sul telefono</b>
+        <span>Sette video brevi, uno per sezione. In inglese, su YouTube.</span>
+      </a>
+      <a class="video-scheda" href="https://www.youtube.com/@SparklingTones/videos" target="_blank" rel="noopener">
+        <b>L&rsquo;app sul computer</b>
+        <span>Cinque video: editor, libreria, Live, IA. In inglese, su YouTube.</span>
+      </a>
+      <a class="video-scheda" href="https://www.youtube.com/@SparklingTones" target="_blank" rel="noopener">
+        <b>Il canale</b>
+        <span>Tutti i video di SparklingTones.</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section id="cosa-fa">
   <div class="dentro">
-    <p class="occhiello">Cosa fa</p>
-    <h2>Tre cose, e le fa tutte davanti all&rsquo;ampli acceso.</h2>
-    <p class="introduzione">
-      Lo Spark 2 tiene otto preset alla volta, lo Spark NEO quattro. Tutto il resto &mdash; i suoni che hai
-      costruito, quelli che ti servono solo per un pezzo, quelli che stai ancora
-      provando &mdash; non ha un posto dove stare. Questo è quel posto.
-    </p>
-
+    <p class="occhiello">Sul telefono</p>
+    <h2>Organizza, suona, regola.</h2>
+    <p class="introduzione">Lo Spark 2 tiene otto preset, lo Spark NEO quattro. Tutti gli altri suoni stanno qui.</p>
     <div class="schede">
       <div class="scheda">
         <h3>Organizza</h3>
-        <p>
-          Tutti i preset che vuoi, con nome, categorie, note e famiglia di suono.
-          Li legge dall&rsquo;ampli, importa il <code>preset_backup.zip</code> dell&rsquo;app
-          ufficiale, esporta e reimporta in JSON.
-        </p>
-        <p>
-          Rileggere la libreria dall&rsquo;ampli <strong>non cancella mai il tuo lavoro</strong>:
-          riconosce i preset e riscrive solo la parte sonora, lasciando intatti tag,
-          note e ordine.
-        </p>
+        <p>Nomi, categorie, note e colori. Legge gli slot dall&rsquo;ampli e importa il backup dell&rsquo;app ufficiale; rileggere non cancella mai il tuo lavoro.</p>
       </div>
       <div class="scheda">
         <h3>Suona</h3>
-        <p>
-          Una vista <em>Live</em> fatta per essere usata mentre suoni, non per
-          catalogare: banchi da otto pulsanti grandi, e quello che suona si accende
-          come un circuito sotto corrente.
-        </p>
-        <p>
-          Un preset già caricato sull&rsquo;ampli si attiva <strong>all&rsquo;istante</strong>;
-          uno che non c&rsquo;è viene trasmesso per intero in circa un secondo. Tieni premuto
-          un pulsante due secondi e sei già nelle sue manopole.
-        </p>
-        <p>
-          E quando serve, <strong>Tuner</strong>: l&rsquo;ampli fa da accordatore e la nota
-          compare sul telefono, che diventa bianca quando la corda è intonata.
-        </p>
+        <p>Banchi da otto pulsanti grandi, da premere al buio. Un preset già nell&rsquo;ampli parte all&rsquo;istante. C&rsquo;è anche l&rsquo;accordatore.</p>
       </div>
       <div class="scheda">
         <h3>Regola</h3>
-        <p>
-          Un editor della catena effetti che agisce <strong>sul suono che sta
-          suonando</strong>: ogni pedale e ogni ampli è disegnato, giri la manopola sul
-          disegno e l&rsquo;ampli risponde.
-        </p>
-        <p>
-          Prima di aprirsi rilegge sempre lo stato vero dall&rsquo;ampli, perché se hai
-          toccato un pomello sul pannello la verità è lì e non nella libreria.
-          Niente viene salvato finché non lo chiedi.
-        </p>
+        <p>Giri le manopole e l&rsquo;ampli cambia mentre suoni. Due vesti a scelta: <strong>Classico</strong>, con le manopole grandi, e <strong>Neon</strong>, coi pedali disegnati.</p>
       </div>
     </div>
+    <div class="tris">
+      <figure><img src="media/app-live.webp" width="520" height="957" loading="lazy" alt="La vista live: otto pulsantoni, quattro per lato"><figcaption>Vista Live</figcaption></figure>
+      <figure><img src="media/editor-classico.jpg" width="780" height="1688" loading="lazy" alt="L&rsquo;editor Classico: il Clone Drive sullo sfondo e le sue manopole"><figcaption>Editor Classico</figcaption></figure>
+      <figure><img src="media/editor-neon.jpg" width="780" height="1688" loading="lazy" alt="L&rsquo;editor Neon: la testata dell&rsquo;ampli disegnata al neon"><figcaption>Editor Neon</figcaption></figure>
+    </div>
+  </div>
+</section>
 
-    <img class="schermata-live" src="media/app-live.webp" width="520" height="957" loading="lazy"
-         alt="La vista live: otto pulsantoni neri col disegno di un circuito, quattro a sinistra e quattro a destra; quello che suona ha il bordo sfumato e la luce viola">
-    <p class="didascalia">La vista live: quattro preset a sinistra e quattro a destra, come i due banchi dell&rsquo;ampli.</p>
-    <a class="video-link verticale" href="https://www.youtube.com/@SparklingTones/shorts" target="_blank" rel="noopener" aria-label="Guarda i video dell'app su YouTube">
-      <img src="media/app.webp" alt="L'editor dell'app sul telefono: la catena effetti coi blocchi disegnati, e il Tube Drive con le sue manopole" width="540" height="960" loading="lazy">
-      <span class="play"><span></span></span>
-    </a>
-    <p class="video-didascalia centro">L&rsquo;app al lavoro, una sezione per video: sette video brevi, in inglese. Si aprono su YouTube.</p>
+<section id="computer">
+  <div class="dentro">
+    <p class="occhiello">Sul computer</p>
+    <h2>Lo schermo grande, per lavorare sui suoni.</h2>
+    <p class="introduzione">
+      La stessa libreria, pensata per mouse e tastiera: tutta la catena sempre in vista,
+      i modelli in una lista accanto alle manopole, la libreria a destra. Si apre in Chrome
+      o Edge, su Windows, Mac e Linux. <strong>In arrivo</strong>: l&rsquo;app per Windows da installare, sul Microsoft Store, che si apre da sola senza browser.
+    </p>
+    <img class="schermata-pc" src="media/pc.jpg" width="1920" height="1080" loading="lazy"
+         alt="SparklingTones sul computer: in alto l'ampli American High Gain con le sue manopole e la lista dei modelli, a destra la libreria, in basso la catena dei sette blocchi">
+    <div class="schede quattro">
+      <div class="scheda">
+        <h3>Editor</h3>
+        <p>Trascini una manopola o usi la rotella, cambi modello dalla lista, accendi e spegni
+          i blocchi. <strong>A/B</strong> per confrontare col preset salvato, e ogni modifica si annulla.</p>
+      </div>
+      <div class="scheda">
+        <h3>Libreria e banchi</h3>
+        <p>Cerca, ordina, un clic e il preset suona. I banchi si compongono trascinando i preset
+          al loro posto, come una scaletta.</p>
+      </div>
+      <div class="scheda">
+        <h3>Live e pedaliera MIDI</h3>
+        <p>Lo schermo diventa una pedaliera. Con un pedale MIDI, via cavo o Bluetooth, dai a ogni
+          riquadro il suo footswitch e suoni senza mani.</p>
+      </div>
+      <div class="scheda">
+        <h3>Genera con l&rsquo;IA</h3>
+        <p>Descrivi il suono che cerchi, copia la richiesta nella chat che usi già e incolla la
+          risposta: il preset nuovo è sul palco. Niente account né chiavi.</p>
+      </div>
+    </div>
+    <div class="azioni" style="margin:34px 0 0">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/pc.html?lang=it">Apri sul computer</a>
+      <a class="bottone calmo" href="https://www.youtube.com/@SparklingTones/videos" target="_blank" rel="noopener">Guarda i video</a>
+    </div>
   </div>
 </section>
 
@@ -670,7 +718,10 @@
     <p class="introduzione" style="margin:10px auto 28px">
       Niente da installare, niente da registrare, niente da pagare.
     </p>
-    <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a>
+    <div class="azioni" style="justify-content:center">
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/?lang=it">📱 Apri sul telefono</a>
+      <a class="bottone" href="https://mazzrelaz.github.io/SparklingTones/pc.html?lang=it">💻 Apri sul computer</a>
+    </div>
     <div class="caffe-riga">
       <p>SparklingTones è gratis e lo resterà: niente pubblicità, niente account. Lo scrivo nel tempo libero; se ti è utile, un caffè mi aiuta a continuare.</p>
       <a class="bottone caffe" href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a>
@@ -693,7 +744,8 @@
     </p>
     <p style="margin-top:20px">
       <a href="https://github.com/mazzrelaz/SparklingTones">GitHub</a> &middot;
-      <a href="https://mazzrelaz.github.io/SparklingTones/?lang=it">Apri l&rsquo;app</a> &middot;
+      <a href="https://mazzrelaz.github.io/SparklingTones/?lang=it">App per telefono</a> &middot;
+      <a href="https://mazzrelaz.github.io/SparklingTones/pc.html?lang=it">App per computer</a> &middot;
       <a href="https://www.youtube.com/@SparklingTones" target="_blank" rel="noopener">YouTube</a> &middot;
       <a href="https://buymeacoffee.com/mazzgear" target="_blank" rel="noopener">☕ Offrimi un caffè</a> &middot;
       <a href="privacy.html">Privacy</a> &middot;
