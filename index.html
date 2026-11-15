@@ -216,6 +216,12 @@
 
   /* ---- chiusura ------------------------------------------------------ */
   .chiusura { text-align:center; }
+  /* Lo scarico di responsabilità, in grande sotto i pulsanti (regola dell'utente, 15 novembre 2026). */
+  .rischio-grande { margin:28px auto 0; max-width:720px; text-align:left; padding:18px 22px;
+                    border:2px solid var(--accent); border-radius:14px; background:rgba(227,6,19,.10); }
+  .rischio-grande strong.testa { display:block; font-family:var(--strumento); font-size:22px; color:#fff; margin-bottom:6px; }
+  .rischio-grande p { margin:0; font-size:16px; line-height:1.55; color:var(--text, #eee); }
+  footer .rischio { color:#ddd; }
   footer { padding:44px 0 60px; color:var(--faint); font-size:14px; }
   footer p { max-width:64ch; margin:0 auto 12px; text-align:center; }
   footer a { color:var(--dim); }
@@ -283,6 +289,13 @@
       <span class="req">Windows, Mac, Linux, Android</span>
       <span class="req">iPhone e iPad con Bluefy</span>
       <span class="req">Gratis e open source</span>
+    </div>
+    <div class="rischio-grande" role="note">
+      <strong class="testa">⚠️ Lo usi a tuo rischio</strong>
+      <p>SparklingTones è un progetto amatoriale e indipendente, <strong>senza alcun rapporto con Positive Grid</strong>,
+        fornito così com&rsquo;è e <strong>senza garanzie di alcun tipo</strong>. L&rsquo;autore non risponde di nessun danno:
+        preset persi o sovrascritti, un amplificatore che si blocca o si guasta, qualunque conseguenza dei comandi mandati
+        via Bluetooth. Tieni un backup dei preset a cui tieni.</p>
     </div>
   </div>
 </div>
@@ -741,6 +754,7 @@
       per il Bluetooth è <a href="https://github.com/paulhamsh/Spark">paulhamsh/Spark</a>.
     </p>
     <p>
+      <strong class="rischio">Software fornito così com&rsquo;è, senza garanzie: lo usi a tuo rischio.</strong>
       <strong>Nessun rapporto con Positive Grid Inc.</strong> Non è un prodotto
       ufficiale, non è approvato né supportato, e non usa loro codice. &laquo;Spark&raquo; e
       &laquo;Positive Grid&raquo; sono citati solo per dire con cosa funziona.
